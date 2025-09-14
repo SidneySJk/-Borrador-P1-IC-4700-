@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// 🔹 Macros para configuración
-#define ARCHIVO_LIBROS "Libros.txt"
+// Macros para configuración
+#define ARCHIVO_LIBROS "data/Libros.txt"
 #define MAX_NOMBRE 100
 
-// 🔹 Definición del struct
+// Definición del struct
 typedef struct {
     char *nombreLibro;
     float *precioLibro;
@@ -16,14 +16,12 @@ typedef struct {
     int *cantidad;
 } Libro;
 
-// 🔹 Prototipos de funciones
+// Prototipos de funciones
 Libro CrearLibro();
 int obtenerSiguienteCodigo();
-void registrarLibro(Libro *lib);
+void registrarLibro();
 void guardarLibroEnTXT(Libro *lib);
 void LiberarMemoriaLibro(Libro *lib);
 void inventarioDePrograma();
-int iniciarPrograma();
-
 
 #endif

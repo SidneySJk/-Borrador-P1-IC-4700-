@@ -1,14 +1,18 @@
-#ifndef Inventario_H
-#define Inventario_H
+#ifndef INVENTARIO_H
+#define INVENTARIO_H
+#include <stdio.h>
+#include <stdlib.h>
+//#include "Inventario.c"
 
 typedef struct {
     char *codigoBuscado;
-    int *cantidadModificar;
+    int *modificar;
  
 } Inventario;
 
 Inventario CrearInventario();
-void leerTxt();
-void actualizarCarga(char *codigoBuscado, int *cantidadModificar);
+void leerTxt(Inventario *inve);
+void actualizarCarga(Inventario *inve);//(char *codigoBuscado, int *modificar);
+void LiberarMemoriaInventario(Inventario *inve);
 
 #endif
