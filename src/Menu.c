@@ -1,7 +1,7 @@
-#include "../headers/Menu.h"//Menu.h
-#include "../headers/Libro.h"
-#include "../headers/Cliente.h"
-#include "../headers/Inventario.h"
+#include "Menu.h"//../headers/Menu.h"//Menu.h
+#include "Libro.h//"//../headers/Libro.h"
+#include "Cliente.h"//"../headers/Cliente.h"
+#include "Inventario.h"//"../headers/Inventario.h"
 #include <stdio.h>
 #include <stdlib.h>
 
