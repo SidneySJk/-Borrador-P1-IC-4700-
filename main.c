@@ -1,6 +1,7 @@
-#include "Libro.h"
-#include "Libro.c"
+#include "../headers/Menu.h"
+#include <stdio.h>
 
 int main() {
-    return iniciarPrograma();
+    printf("¡Hola, el programa se ejecutó!\n");
+    return menuInicial();
 }
