@@ -1,1 +1,11 @@
+Codigo: LIB1
+Nombre: SDVB
+Precio: 24.50
+Cantidad: 43
+CantidadCantidad;
 
+Codigo: LIB2
+Nombre: Don Quijote
+Precio: 23.40
+Cantidad: 24
+;
