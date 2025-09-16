@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 // Macros para configuración
-#define ARCHIVO_LIBROS "data/Libros.txt"
+#define ARCHIVO_LIBROS "../data/Libros.txt"
 #define MAX_NOMBRE 100
 
 // Definición del struct
@@ -22,6 +22,9 @@ int obtenerSiguienteCodigo();
 void registrarLibro();
 void guardarLibroEnTXT(Libro *lib);
 void LiberarMemoriaLibro(Libro *lib);
+void eliminarLibro(const char* codigoBuscado);
+char* solicitarCodigo();
+void consultarCatalogo();
 void inventarioDePrograma();
 
 #endif
