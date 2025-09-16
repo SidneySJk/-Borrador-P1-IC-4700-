@@ -170,6 +170,47 @@ void eliminarLibro(const char* codigoBuscado){
     }
 }
 
+// --------------------------------------------------Consultar Catalogo----------------------------------------------------------------------
+
+void consultarCatalogo() {
+    FILE *archi = fopen("data/Libros.txt", "r");
+    if (!archi) {
+        printf("No hay libros registrados.\n");
+        return;
+    }
+    
+    printf("\n--- CATALOGO DE LIBROS ---\n");
+    printf("CODIGO | NOMBRE                 | PRECIO    | CANTIDAD\n");
+    printf("-----------------------------------------------------------\n");
+    
+    char linea[256];
+    char nombre[100];
+    float precio;
+    int codigo, cantidad;
+    
+    while (fgets(linea, sizeof(linea), archi)) {
+        if (sscanf(linea, "Codigo: LIB%d", &codigo) == 1) {
+            // Leer las siguientes líneas del registro
+            fgets(linea, sizeof(linea), archi);
+            sscanf(linea, "Nombre: %[^\n]", nombre);
+            
+            fgets(linea, sizeof(linea), archi);
+            sscanf(linea, "Precio: %f", &precio);
+            
+            fgets(linea, sizeof(linea), archi);
+            sscanf(linea, "Cantidad: %d", &cantidad);
+            
+            // Saltar la línea de separación ";"
+            fgets(linea, sizeof(linea), archi);
+            
+            // Mostrar el libro
+            printf("LIB%-3d | %-22s | $%-6.2f | %-3d\n", 
+                   codigo, nombre, precio, cantidad);
+        }
+    }
+    
+    fclose(archi);
+}
 
 // --------------------------------------------------Funcs Auxliares----------------------------------------------------------------------
 

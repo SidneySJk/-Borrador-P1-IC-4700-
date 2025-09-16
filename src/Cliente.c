@@ -186,5 +186,4 @@ void eliminarCliente(const char* cedulaBuscada) {
 char* solicitarCedula() {
     printf("Ingrese la cedula del cliente a eliminar: ");
     return espacioDeMemoria();
-
 }

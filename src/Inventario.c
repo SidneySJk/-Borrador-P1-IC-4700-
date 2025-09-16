@@ -2,19 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "Inventario.h"//"../headers/Inventario.h"
+#include "../headers/Inventario.h"
 //#include "Operadores.c"
 //#include "Operadores.h"
 //#include "Consola.c"
 //#include "Consola.h"
-#include "Menu.h"
+#include "../headers/Menu.h"
 
 
-//extern char* espacioDeMemoria();
+extern char* espacioDeMemoria();
 
 Inventario CrearInventario() {
     Inventario inve;
-    inve.codigoBuscado = malloc(236*sizeof(char));
+    inve.codigoBuscado = malloc(MAX_CARACTERES*sizeof(char));
     inve.modificar = (int*)malloc(sizeof(int));
     return inve;
 }
@@ -22,57 +22,91 @@ Inventario CrearInventario() {
 
 void leerTxt(Inventario *inve)
 {
-    FILE *archi = fopen("Modificaciones.txt","r+");
-    char *buffer = malloc(236*sizeof(char));//espacioDeMemoria();
-    //char *codigoBuscado =  malloc(236*sizeof(char));
-    char *cantidadModificar = malloc(236*sizeof(char));;
+    printf("Leyendo modificaciones...\n");
+    FILE *archi = fopen("../data/Modificaciones.txt","r+");
+    if (!archi) {
+        printf("No se pudo abrir %s\n", "Modificaciones.txt");
+        return;
+    }
+    //char* linea = NULL;
+    //size_t  largoLinea = 0;
+    //size_t leer;
+    char *buffer = malloc(MAX_CARACTERES*sizeof(char));//espacioDeMemoria();
+    char *codigo =  malloc(MAX_CARACTERES*sizeof(char));
+    char *cantidadModificar = malloc(MAX_CARACTERES*sizeof(char)); 
+    char *copiaBuffer = buffer;
     char *puntero;
     
     while (fgets(buffer, sizeof(buffer), archi)) { //(archi != NULL) {
-        fscanf(archi,"%s",buffer);
+        //fscanf(archi,"%s",buffer);
+        //printf("Buffer actual: %s\n", buffer);
+        //printf("Se entro al while principal\n");
         
-        
-        while ( *buffer != 0) {
+        while ( *copiaBuffer != 0) {
             int indice = 0;
-            while ((*buffer != ',') && (*buffer != '\0')){
-                inve->codigoBuscado[indice] = *buffer;
+            while ((*copiaBuffer != ',') && (*copiaBuffer != '\0')){
+                //inve->codigoBuscado[indice] = *copiaBuffer;
+                codigo[indice] = *copiaBuffer;
+                //printf("%d\n",indice);
+                //printf("%s\n", copiaBuffer);
                 indice++;
-                buffer++;
+                copiaBuffer++;
+                //printf("Se entro en el bucle de lectura del codigo\n");
+
             }
+            codigo[indice] = '\0';
+            //printf("Codigo leido: %s\n", codigo);
             //char* cantidadModificar = strchr(linea,',');
             //str(codigoBuscado, linea, archi - linea);
-            inve->codigoBuscado[indice] = '\0';
-            if(*buffer ==',') buffer++;
+            (inve->codigoBuscado) = codigo;//[indice];
+            printf("Codigo leido: %s\n", inve->codigoBuscado);
+            if(*copiaBuffer ==',') copiaBuffer++;
             indice = 0;
-            while ((*buffer != ',') && (*buffer != '\0')){
-                cantidadModificar[indice] = *buffer;
+            while ((*copiaBuffer != ',') && (*copiaBuffer != '\0')){
+                cantidadModificar[indice] = *copiaBuffer;
+                //printf("%d\n", indice);
+                //printf("%s\n", copiaBuffer);
                 indice++;
-                buffer++;
+                copiaBuffer++;
+                //printf("Se entro en el otro bucle de lectura del codigo\n");
             }
-            inve->codigoBuscado[indice] = '\0';
+            cantidadModificar[indice] = '\0';
+            printf("Cantidad a modificar leida: %s\n", cantidadModificar);
+            
+            //inve->codigoBuscado[indice] = '\0';
             *(inve->modificar) = (int) strtol(cantidadModificar, &puntero, 10);
+            
+            //printf((inve->codigoBuscado));
+            //printf(inve->modificar);
             actualizarCarga(inve);//->codigoBuscado, &inve->modificar);
             
         }
     }
+    printf("Liberando memoria...\n");
     free(buffer);
-    free(cantidadModificar );
+    free(codigo);
+    free(copiaBuffer);
+    free(cantidadModificar);
+    fclose(archi);
     //LiberarMemoriaInventario(inve);
 
 }
 
 //Retorna el nuevo stack o devuelve al menu
-int modifcarStock(int stock, Inventario *inve){
+int modificarStock(int stock, Inventario *inve){
     printf("Desea sumar/restar del stock actual?\n1) Sumar\n2) Restar\n");
     int entrada;
     scanf("%d", &entrada);
 
     switch(entrada){
+        
         case 1:{
+            printf("Se sumara al stock actual\n");
             return stock + *inve->modificar;
             break;
         }   
         case 2:{
+            printf("Se restara del stock actual\n");
             if ((stock - *inve->modificar) < 0) {
                 printf("La cantidad a retirar es mayor al stock actual, desea retirar todo el stock?\n1) Si\n2) No\n");
                 scanf("%d", &entrada);
@@ -93,56 +127,75 @@ int modifcarStock(int stock, Inventario *inve){
             menuAdministrativo();
         }
     }
+    return 0;
 }
 
 //Tomar info de txt y actualizar el stock actual "Libros.txt"
 void actualizarCarga(Inventario *inve){//(char *codigoBuscado, int *cantidadModificar){
     //int codigoBuscado;
-    FILE *archi = fopen("Modificaciones.txt", "r");
+    printf("Se actualizara el inventario");
+    FILE *archi = fopen("../data/Libros.txt", "r");
     if (!archi) {
-        printf("No se pudo abrir %s\n", "Clientes.txt");
+        printf("No se pudo abrir %s\n", "Libros.txt");
+        fclose(archi);
         return;
     }
 
-    FILE *temp = fopen("Temp.txt", "w");
+    FILE *temp = fopen("../data/Temp.txt", "w");
     if (!temp) {
         printf("No se pudo crear archivo temporal\n");
-        fclose(archi);
+        fclose(temp);
         return;
     }
 
     //scanf("%d", *codigoBuscado);
     // Guardar linea
-    char *buffer = malloc(236*sizeof(char));//espacioDeMemoria();
-    char *numModificado = malloc(236*sizeof(char));
-    char *nuevaLinea;
+    char *_buffer = malloc(MAX_CARACTERES*sizeof(char));//espacioDeMemoria();
+    char *numModificado = malloc(MAX_CARACTERES*sizeof(char));
+    char *nuevaLinea = malloc(MAX_CARACTERES*sizeof(char));//char *nuevaLinea
     
     //linea con el codigo que se busca
-    char strChar[3] = {*inve->codigoBuscado, '\0'};
-    char *lineaCodigo = strcat("Codigo: ", strChar);
+    //char strChar[3] = {*inve->codigoBuscado, '\0'};
+    //char *lineaCodigo = strcat("Codigo: ", strChar);
+    char lineaCodigo[MAX_CARACTERES];
+    sprintf(lineaCodigo, "Codigo: %s", inve->codigoBuscado);
+    printf("Linea: %s\n", lineaCodigo);
     
     //Boleanos
     bool encontrado = false; 
     bool copiar = true;
     //char *NuevaLinea;
     //int modificar;
-    
-    while (fgets(buffer, sizeof(buffer), archi)) {
-        
-        if (strncmp(buffer, "Codigo:", 7) == 0) {
-            
-            if (strcmp(lineaCodigo,buffer) == 0){
-                encontrado = true;
-            }
-        }
 
-        if ((strncmp(buffer, "Cantidad:", 9) == 0) && encontrado){
+    while (fgets(_buffer, MAX_CARACTERES, archi)) {//sizeof(_buffer)
+        printf("Primer ciclo while\n");
+        if (strncmp(lineaCodigo,_buffer, strlen(lineaCodigo)) == 0){
+        //if (strncmp(_buffer, "Codigo:", 7) == 0) {
+            printf("Comparar\n");
+            printf("Linea Codigo: %s\n", lineaCodigo);
+            printf("Buffer: %s\n", _buffer);
+
+            //if (strcmp(lineaCodigo,_buffer) == 0){
+            encontrado = true;
+                
+            //}
+            printf("%d\n", encontrado);
+        }
+        
+        //Si se encontro el codigo, buscar la linea de cantidad y modificarla
+        if ((strncmp(_buffer, "Cantidad:", 9) == 0) && encontrado){
+            printf("Se esta reescribiendo la linea\n");
             copiar = false;
-            char *token = strtok(NULL, ": ");
+            char *token = strtok(_buffer, ": ");
+            token = strtok(NULL, ": ");
             if (token != NULL){
-                    int nuevoNum = modifcarStock(atoi(token), inve);
+            //if (token != NULL){
+                    int nuevoNum = modificarStock(atoi(token), inve);
+                    printf("Nuevo numero: %d\n", nuevoNum);
                     sprintf(numModificado, "%d", nuevoNum);
-                    nuevaLinea = strcat("Cantidad: ", numModificado);//nuevoNum);//, token);
+                    sprintf(nuevaLinea, "Cantidad: %s", numModificado);
+                    //nuevaLinea = strcat("Cantidad: %s\n", numModificado);//nuevoNum);//, token);
+                    printf("Nueva linea: %s\n", nuevaLinea);
                     fputs(nuevaLinea, temp);
                     fputs("\n",temp);
                     copiar = true;
@@ -157,92 +210,30 @@ void actualizarCarga(Inventario *inve){//(char *codigoBuscado, int *cantidadModi
             //sscanf(buffer, "Codigo: %19s", cantidadModificar);}}}
         
         if (copiar) {
-                fputs(buffer, temp);
+                fputs(_buffer, temp);
         }
     }
 
+    free(_buffer);
+    free(numModificado);
+    free(nuevaLinea);
+    printf("Archivo actualizado correctamente.\n");
     fclose(archi);
     fclose(temp);
-
-
-    if (remove("Modificaciones.txt") != 0 || rename("Temp.txt", "Modificaciones.txt") != 0) {
+    
+    if (remove("../data/Libros.txt") != 0 || rename("../data/Temp.txt", "../data/Libros.txt") != 0) {
         perror("Error al actualizar archivo");
         return;
     }
-
+    
     LiberarMemoriaInventario(inve);
 }
 
 
-
-/**
-    do{
-        char buffer[100];
-        for(int indice = 0; indice < 100; indice++)
-            buffer[indice];
-            buffer[0] = '\0';
-        fgets(buffer, 100, archi);
-        printf(buffer);
-        if (strncmp(buffer, "Codigo:", 7) == 0) {
-            if (strstr(buffer, codigoBuscado)) {  
-                printf("Libro encontrado:\n");
-                scanf('%s\n',buffer);
-                //printf('%s\n', buffer[1]);
-                //printf('%s\n',buffer[2]);
-                //printf('%s\n',buffer[3]);
-                printf("Desea sumar/restar del stock actual?\n(Formato: +#/-#):\n");
-                char* entrada;
-                canf("%f", entrada);
-                encontrado = buffer[3];
-                char* cantidad = strchar(encontrado,':');
-                archi = ("Libros.txt", "w");
-                if (entrada == '+') {
-                    result = (cantidad-'0');
-                    modificar = result + cantidadModificar;
-                    
-                } if (entrada == '-') {
-                    result = (cantidad-'0');
-                    //modificar = result - cantidadModificar;
-                } else { 
-                    printf("Entrada invalida, debe seguir el formato");
-                    inventarioDePrograma();
-                }
-            }
-        }
-    }while(archi != NULL);
+void iniciarActualizacionDeStock(){
+   Inventario inve = CrearInventario();
+   leerTxt(&inve);
 }
-    
-    while (feof(archi) == 0) {
-        linea++;
-        if (strncmp(buffer, "Codigo:", 7) == 0) {
-            if (strstr(buffer, codigoBuscado)) {  
-                printf("Libro encontrado:\n");
-                printf(buffer[0], '\n');
-                printf(buffer[1], '\n');
-                printf(buffer[2], '\n');
-                printf(buffer[3], '\n');
-                printf("Desea sumar/restar del stock actual?\n(Formato: +#/-#):\n");
-                char* entrada;
-                canf("%f", entrada);
-                encontrado = buffer[3];
-                char* cantidad = strchar(encontrado,':');
-                archi = ("Libros.txt", "w");
-                if (entrada == '+') {
-                    result = (cantidad-'0');
-                    modificar = result + cantidadModificar;
-                    
-                } if (entrada == '-') {
-                    result = (cantidad-'0');
-                    //modificar = result - cantidadModificar;
-                } else { 
-                    printf("Entrada invalida, debe seguir el formato");
-                    inventarioDePrograma();
-                }
-
-            } 
-        }
-    }
-    */
 
 
 void LiberarMemoriaInventario(Inventario *inve) {
