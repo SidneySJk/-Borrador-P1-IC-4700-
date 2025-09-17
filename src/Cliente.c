@@ -1,4 +1,4 @@
-#include "Cliente.h"
+#include "../headers/Cliente.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -183,7 +183,56 @@ void eliminarCliente(const char* cedulaBuscada) {
     }
 }
 
+// ----------------------------------------------------------------------Mostrar Cliente
+
+void mostrarCliente(const char* cedulaBuscada) {
+    FILE *archi = fopen("data/Clientes.txt", "r");
+    if (!archi) {
+        printf("No hay clientes registrados.\n");
+        return;
+    }
+    
+    char linea[256];
+    bool encontrado = false;
+    
+    while (fgets(linea, sizeof(linea), archi)) {
+        if (strstr(linea, cedulaBuscada)) {
+            printf("\nCLIENTE ------\n");
+
+            printf("%s", linea); // Cedula
+            
+            if (fgets(linea, sizeof(linea), archi)) printf("%s", linea); // Nombre
+            if (fgets(linea, sizeof(linea), archi)) printf("%s", linea); // Telefono
+            
+            encontrado = true;
+            break;
+        }
+    }
+    
+    fclose(archi);
+    
+    if (!encontrado) {
+        printf("\nCédula '%s' no encontrada en el archivo.\n", cedulaBuscada);
+    }
+}
+
+void consultarClientePorCedula() {
+    // 1. Solicitar edula del cliente
+    char* cedula = solicitarCedula();
+    
+    // 22. Mostrar datos del cliente
+    mostrarCliente(cedula);
+    
+    // 3. Mostrar pedidos del cliente
+    printf("\n");
+    mostrarPedidosPorCedula(cedula);
+
+    free(cedula);
+}
+
+// ----------------------------------------------------------------------Solicitar Cedula
+
 char* solicitarCedula() {
-    printf("Ingrese la cedula del cliente a eliminar: ");
+    printf("Ingrese la cedula del cliente: ");
     return espacioDeMemoria();
 }

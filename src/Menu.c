@@ -1,7 +1,12 @@
-#include "Menu.h"
-#include "Libro.h"
-#include "Cliente.h"
-#include "Inventario.h"
+#include "../headers/Menu.h"
+#include "../headers/Libro.h"
+#include "../headers/Cliente.h"
+#include "../headers/Pedido.h"
+<<<<<<< HEAD
+#include "../headers/Inventario.h"
+=======
+#include "../headers/Estadisticas.h"
+>>>>>>> 4c1aebc6957dca4159b71c56e191eeb8e96963ef
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -30,7 +35,7 @@ int menuInicial() {
                 printf("Saliendo...\n");
                 return 0;
             default:
-                printf("Opción inválida.\n");
+                printf("Opcion invalida.\n");
         }
     }
 }
@@ -50,19 +55,18 @@ int menuGeneral() {
     switch (opcion) {
         case 1: // Consulta Catalogo
             consultarCatalogo();
-            return 0;
-            //break;
+            break;
         case 2: // Consulta de Cliente
-            printf("Pronta implementacion");
-            return 0;
-            //break;
+            consultarClientePorCedula();
+            break;
         case 3: // Salir
             menuInicial();
+            //break;
             return 0;
         default:
-            printf("Opción inválida.\n");
-            return 0;
+            printf("Opcion invalida.\n");
     }
+    return 0;
 }
 
 int menuAdministrativo() {
@@ -101,12 +105,12 @@ int menuAdministrativo() {
                 menuPedidos();
                 break;
             case 5:
-                printf("En desarrollo");
+                menuEstadisticas();
                 break;
             case 6:
                 return 0;
             default:
-                printf("Opción inválida.\n");
+                printf("Opcion invalida.\n");
         }
     }
 }
@@ -140,14 +144,13 @@ int menuInventario() {
             }
             case 3:
                 iniciarActualizacionDeStock();
-                //actualizarCargaInventario();
                 system("pause");
                 printf("En desarrollo");
                 break;
             case 4:
                 return 0;
             default:
-                printf("Opción inválida.\n");
+                printf("Opcion invalida.\n");
         }
     }
 }
@@ -170,21 +173,68 @@ int menuPedidos() {
         
         switch (opcion) {
             case 1:
-                printf("En desarrollo");
+                gestionarPedido();
                 break;
-            case 2:
-                printf("En desarrollo");
+            case 2: {
+                printf("Ingrese el numero de pedido a eliminar: ");
+                int numeroPedido;
+                scanf("%d", &numeroPedido);
+                getchar(); // Limpiar buffer
+                eliminarPedido(numeroPedido);
+                system("pause");
                 break;
+            }
             case 3:
+                iniciarActualizacionDeStock();
+                system("pause");
                 printf("En desarrollo");
+                //return 0;
                 break;
             case 4:
-                printf("En desarrollo");
+                consultarPedidos();
+                system("pause");
                 break;
             case 5:
                 return 0;
             default:
-                printf("Opción inválida.\n");
+                printf("Opcion invalida.\n");
         }
     }
+<<<<<<< HEAD
+    return 0;
+=======
+}
+
+int menuEstadisticas() {
+    int opcion;
+
+    while(1) {
+        printf("\n------------------------------\n");
+        printf("   MENU DE ESTADISTICAS\n");
+        printf("------------------------------\n");
+        printf("1. Total de ventas realizadas\n"); 
+        printf("2. Clientes con mas pedidos\n");
+        printf("3. Libros mas vendidos\n");
+        printf("4. Volver al menu administrativo\n");
+        printf("Seleccione una Opcion: ");
+        scanf("%d", &opcion);
+        getchar();
+        
+        switch (opcion) {
+            case 1:
+                calcularTotalVentas();
+                break;
+            case 2:
+                clientesConMasPedidos();
+                break;
+            case 3:
+                librosMasVendidos();
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("Opcion invalida");
+        }     
+    }
+>>>>>>> 4c1aebc6957dca4159b71c56e191eeb8e96963ef
 }

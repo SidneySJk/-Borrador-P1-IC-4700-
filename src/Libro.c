@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "Libro.h"
-#include "Cliente.h"
+#include "../headers/Libro.h"
+#include "../headers/Cliente.h"
 
 // -------------------------------------Guardar LIBRO------------------------------------------------------------------------------------
 

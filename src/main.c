@@ -1,8 +1,7 @@
-#include "Menu.h"
-#include "Inventario.h"
+#include "../headers/Menu.h"
 #include <stdio.h>
 
 int main() {
-    iniciarActualizacionDeStock();
-    //  menuInicial();
+    menuInicial();
+    return 0;
 }
