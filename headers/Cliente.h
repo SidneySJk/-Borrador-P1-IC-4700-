@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "../headers/Pedido.h"
 
 #define ARCHIVO_CLIENTES "data/Clientes.txt"
 
@@ -20,6 +21,8 @@ bool validarTelefono(const char* telefono);
 void guardarClienteEnTXT(Cliente *cli);
 void liberarMemoriaCliente(Cliente *cli);
 void eliminarCliente(const char* cedulaBuscada);
+void mostrarCliente(const char* cedulaBuscada);
+void consultarClientePorCedula();
 char* solicitarCedula();
 
 #endif

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 // Macros para configuración
-#define ARCHIVO_LIBROS "../data/Libros.txt"
+#define ARCHIVO_LIBROS "data/Libros.txt"
 #define MAX_NOMBRE 100
 
 // Definición del struct

@@ -6,5 +6,6 @@ int menuGeneral();
 int menuAdministrativo();
 int menuInventario();
 int menuPedidos();
+int menuEstadisticas();
 
 #endif

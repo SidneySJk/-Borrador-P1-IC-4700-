@@ -2,9 +2,10 @@
 #define INVENTARIO_H
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 //#include "Inventario.c"
 
-#define ARCHIVO_INVENTARIO "..data/Modificaciones.txt"
+#define ARCHIVO_INVENTARIO "../data/Modificaciones.txt"
 #define MAX_CARACTERES 110
 
 typedef struct {
